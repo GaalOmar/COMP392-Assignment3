@@ -7,14 +7,16 @@ module objects {
         public moveLeft: boolean;
         public moveRight: boolean;
         public jump: boolean;
+        public enabled: boolean;
         // CONSTRUCTOR ++++++++++++++++++++++++++    
         constructor() {
-
+            this.enabled = false;
             document.addEventListener('keydown', this.onKeyDown.bind(this), false);
             document.addEventListener('keyup', this.onKeyUp.bind(this), false);
         }
 
         // PUBLIC METHODS
+        
         public onKeyDown(event: KeyboardEvent): void {
             switch (event.keyCode) {
                 case 38: /*up arrow*/
