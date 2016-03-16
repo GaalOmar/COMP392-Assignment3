@@ -31,6 +31,7 @@ import Point = objects.Point;
 import CScreen = config.Screen;
 import Clock = THREE.Clock;
 //haha
+//nono
 //Custom Game Objects
 import gameObject = objects.gameObject;
 
