@@ -75,15 +75,20 @@ var game = (() => {
     var directionLine: Line;
     
     //level objects
+    var dxPerFrame = 1;
     //big island
     var bigIsland: Physijs.Mesh;
     var bigIslandGeometry: CubeGeometry;
     var bigIslandMaterial: Physijs.Material;
+    //small island
+    var smallIsland: Physijs.Mesh;
+    var smallIslandGeometry: CubeGeometry;
+    var smallIslandMaterial: Physijs.Material;
     //board
     var board: Physijs.Mesh;
     var boardGeometry: CubeGeometry;
     var boardMaterial: Physijs.Material;
-
+    
     function init() {
         // Create to HTMLElements
         blocker = document.getElementById("blocker");
@@ -138,26 +143,6 @@ var game = (() => {
         
         setupLevel(); //setup level
         
-        // Spot Light
-        spotLight = new SpotLight(0xffffff);
-        spotLight.position.set(20, 40, -15);
-        spotLight.castShadow = true;
-        spotLight.intensity = 2;
-        spotLight.lookAt(new Vector3(0, 0, 0));
-        spotLight.shadowCameraNear = 2;
-        spotLight.shadowCameraFar = 200;
-        spotLight.shadowCameraLeft = -5;
-        spotLight.shadowCameraRight = 5;
-        spotLight.shadowCameraTop = 5;
-        spotLight.shadowCameraBottom = -5;
-        spotLight.shadowMapWidth = 2048;
-        spotLight.shadowMapHeight = 2048;
-        spotLight.shadowDarkness = 0.5;
-        spotLight.name = "Spot Light";
-        scene.add(spotLight);
-        console.log("Added spotLight to scene");
-
-
         // Player Object
         playerGeometry = new BoxGeometry(2, 2, 2);
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
@@ -177,6 +162,30 @@ var game = (() => {
         player.add(camera);
         console.log("Finished setting up Camera...");
         
+        // Spot Light
+        // spotLight = new SpotLight(0xffffff);
+        // spotLight.position.set(20, 40, -15);
+        // spotLight.castShadow = true;
+        // spotLight.intensity = 2;
+        // spotLight.lookAt(new Vector3(0, 0, 0));
+        // spotLight.shadowCameraNear = 2;
+        // spotLight.shadowCameraFar = 200;
+        // spotLight.shadowCameraLeft = -5;
+        // spotLight.shadowCameraRight = 5;
+        // spotLight.shadowCameraTop = 5;
+        // spotLight.shadowCameraBottom = -5;
+        // spotLight.shadowMapWidth = 2048;
+        // spotLight.shadowMapHeight = 2048;
+        // spotLight.shadowDarkness = 0.5;
+        // spotLight.name = "Spot Light";
+        // scene.add(spotLight);
+        // console.log("Added spotLight to scene");
+        
+        //Derectional Ligth
+        var light = new THREE.DirectionalLight( 0xffffff );
+        light.castShadow = true; // soft white light
+        light.shadowCameraNear= 2;
+        scene.add( light );
         
         // Collision Check
         player.addEventListener('collision', (event) => {
@@ -201,17 +210,10 @@ var game = (() => {
         directionLine = new Line(directionLineGeometry, directionLineMaterial);
         player.add(directionLine);
         console.log("Added DirectionLine to the Player");
-
-        // Sphere Object
-        sphereGeometry = new SphereGeometry(2, 32, 32);
-        sphereMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
-        sphere = new Physijs.SphereMesh(sphereGeometry, sphereMaterial, 1);
-        sphere.position.set(0, 60, 5);
-        sphere.receiveShadow = true;
-        sphere.castShadow = true;
-        sphere.name = "Sphere";
-        //scene.add(sphere);
-        //console.log("Added Sphere to Scene");
+        
+       
+        
+        
 
         // add controls
         gui = new GUI();
@@ -274,17 +276,17 @@ var game = (() => {
         stats.domElement.style.top = '0px';
         document.body.appendChild(stats.domElement);
     }
+    
 
     // Setup main game loop
     function gameLoop(): void {
         stats.update();
-
         if (keyboardControls.enabled) {
             velocity = new Vector3();
 
             var time: number = performance.now();
             var delta: number = (time - prevTime) / 1000;
-
+            
             if (isGrounded) {
                 var direction = new Vector3(0, 0, 0);
                 if (keyboardControls.moveForward) {
@@ -336,7 +338,7 @@ var game = (() => {
         // render the scene
         renderer.render(scene, camera);
     }
-
+    
     // Setup default renderer
     function setupRenderer(): void {
         renderer = new Renderer({ antialias: true });
@@ -346,7 +348,7 @@ var game = (() => {
         renderer.shadowMap.enabled = true;
         console.log("Finished setting up Renderer...");
     }
-    
+
     // Setup level
     function setupLevel(): void {
         // Big Island
@@ -363,24 +365,48 @@ var game = (() => {
         boardGeometry = new BoxGeometry(32, 1, 5);
         boardMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
         board = new Physijs.ConvexMesh(boardGeometry, boardMaterial, 0);
-        board.position.set(0,0,-15);
-        board.receiveShadow = true;
-        board.name = "Board";
-        scene.add(board);
-        console.log("Added Board to scene");
-        // Board
-        boardGeometry = new BoxGeometry(32, 1, 5);
-        boardMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
-        board = new Physijs.ConvexMesh(boardGeometry, boardMaterial, 0);
-        board.position.set(0,0,-30);
+        board.position.set(0,0,-10);
         board.receiveShadow = true;
         board.name = "Board";
         scene.add(board);
         console.log("Added Board to scene");
         
+        // Board
+        boardGeometry = new BoxGeometry(32, 1, 5);
+        boardMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
+        board = new Physijs.ConvexMesh(boardGeometry, boardMaterial, 0);
+        board.position.set(0,0,-18);
+        board.receiveShadow = true;
+        board.name = "Board";
+        scene.add(board);
+        console.log("Added Board to scene");
+        
+        // Big Island
+        bigIslandGeometry = new BoxGeometry(32, 1, 20);
+        bigIslandMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
+        bigIsland = new Physijs.ConvexMesh(bigIslandGeometry, bigIslandMaterial, 0);
+        bigIsland.position.set(0,0,-34);
+        bigIsland.receiveShadow = true;
+        bigIsland.name = "BigIsland";
+        scene.add(bigIsland);
+        console.log("Added BigIsland to scene");
+        
+        // Small Island
+        smallIslandGeometry = new BoxGeometry(10, 1, 10);
+        smallIslandMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
+        smallIsland = new Physijs.ConvexMesh(smallIslandGeometry, smallIslandMaterial, 0);
+        smallIsland.position.set(-11,0,-52);
+        smallIsland.receiveShadow = true;
+        smallIsland.name = "SmallIsland";
+        scene.add(smallIsland);
+        
+        console.log("Added SmallIsland to scene");
+        
+        
+        
         console.log("Finished setting up Level...");
     }
-
+    
     window.onload = init;
 
     return {
