@@ -80,6 +80,10 @@ var game = (() => {
     var bigIsland: Physijs.Mesh;
     var bigIslandGeometry: CubeGeometry;
     var bigIslandMaterial: Physijs.Material;
+    //small island
+    var smallIsland;
+    var smallIslandGeometry;
+    var smallIslandMaterial;
     //board
     var board: Physijs.Mesh;
     var boardGeometry: CubeGeometry;
@@ -387,6 +391,25 @@ var game = (() => {
         board.name = "Board";
         scene.add(board);
         console.log("Added Board to scene");
+        
+        // Big Island
+        bigIslandGeometry = new BoxGeometry(32, 1, 20);
+        bigIslandMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
+        bigIsland = new Physijs.ConvexMesh(bigIslandGeometry, bigIslandMaterial, 0);
+        bigIsland.position.set(0, 0, -34);
+        bigIsland.receiveShadow = true;
+        bigIsland.name = "BigIsland";
+        scene.add(bigIsland);
+        console.log("Added BigIsland to scene");
+        // Small Island
+        smallIslandGeometry = new BoxGeometry(10, 1, 10);
+        smallIslandMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
+        smallIsland = new Physijs.ConvexMesh(smallIslandGeometry, smallIslandMaterial, 0);
+        smallIsland.position.set(-11, 0, -52);
+        smallIsland.receiveShadow = true;
+        smallIsland.name = "SmallIsland";
+        scene.add(smallIsland);
+        console.log("Added SmallIsland to scene");
 
         console.log("Finished setting up Level...");
     }
