@@ -30,7 +30,7 @@ import Face3 = THREE.Face3;
 import Point = objects.Point;
 import CScreen = config.Screen;
 import Clock = THREE.Clock;
-
+//trying to pull
 //Custom Game Objects
 import gameObject = objects.gameObject;
 
