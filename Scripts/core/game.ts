@@ -145,24 +145,28 @@ var game = (() => {
       
 
         // Spot Light
-        spotLight = new SpotLight(0xffffff);
-        spotLight.position.set(20, 40, -15);
-        spotLight.castShadow = true;
-        spotLight.intensity = 2;
-        spotLight.lookAt(new Vector3(0, 0, 0));
-        spotLight.shadowCameraNear = 2;
-        spotLight.shadowCameraFar = 200;
-        spotLight.shadowCameraLeft = -5;
-        spotLight.shadowCameraRight = 5;
-        spotLight.shadowCameraTop = 5;
-        spotLight.shadowCameraBottom = -5;
-        spotLight.shadowMapWidth = 2048;
-        spotLight.shadowMapHeight = 2048;
-        spotLight.shadowDarkness = 0.5;
-        spotLight.name = "Spot Light";
-        scene.add(spotLight);
-        console.log("Added spotLight to scene");
-
+        // spotLight = new SpotLight(0xffffff);
+        // spotLight.position.set(20, 40, -15);
+        // spotLight.castShadow = true;
+        // spotLight.intensity = 2;
+        // spotLight.lookAt(new Vector3(0, 0, 0));
+        // spotLight.shadowCameraNear = 2;
+        // spotLight.shadowCameraFar = 200;
+        // spotLight.shadowCameraLeft = -5;
+        // spotLight.shadowCameraRight = 5;
+        // spotLight.shadowCameraTop = 5;
+        // spotLight.shadowCameraBottom = -5;
+        // spotLight.shadowMapWidth = 2048;
+        // spotLight.shadowMapHeight = 2048;
+        // spotLight.shadowDarkness = 0.5;
+        // spotLight.name = "Spot Light";
+        // scene.add(spotLight);
+        // console.log("Added spotLight to scene");
+        
+        var light = new THREE.DirectionalLight(0xffffff);
+        light.castShadow = true; // soft white light
+        light.shadowCameraNear = 2;
+        scene.add(light);
 
         // Player Object
         playerGeometry = new BoxGeometry(2, 2, 2);
@@ -178,8 +182,8 @@ var game = (() => {
 
         // setup the camera
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 100);
-        camera.position.set(0, 5, 15);
-        camera.lookAt(new Vector3(0, 0, 0));
+        //camera.position.set(0, 5, 0);
+        //camera.lookAt(new Vector3(0, 0, 0));
         player.add(camera);
         console.log("Finished setting up Camera...");
 
@@ -377,7 +381,7 @@ var game = (() => {
         boardGeometry = new BoxGeometry(32, 1, 5);
         boardMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
         board = new Physijs.ConvexMesh(boardGeometry, boardMaterial, 0);
-        board.position.set(0, 0, -15);
+        board.position.set(0, 0, -10);
         board.receiveShadow = true;
         board.name = "Board";
         scene.add(board);
@@ -386,7 +390,7 @@ var game = (() => {
         boardGeometry = new BoxGeometry(32, 1, 5);
         boardMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
         board = new Physijs.ConvexMesh(boardGeometry, boardMaterial, 0);
-        board.position.set(0, 0, -30);
+        board.position.set(0, 0, -18);
         board.receiveShadow = true;
         board.name = "Board";
         scene.add(board);
