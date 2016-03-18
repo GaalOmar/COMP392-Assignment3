@@ -65,6 +65,7 @@ var game = (function () {
     var directionLineMaterial;
     var directionLineGeometry;
     var directionLine;
+    var dead = false;
     //level objects
     //big island
     var bigIsland;
@@ -237,6 +238,13 @@ var game = (function () {
     // Setup main game loop
     function gameLoop() {
         stats.update();
+        // if (player.position.y < -5) {
+        //     dead = true;
+        // }
+        // if(dead){
+        //     player.position.set(0,3,0);
+        //     dead = false;
+        // }
         if (keyboardControls.enabled) {
             velocity = new Vector3();
             var time = performance.now();

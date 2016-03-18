@@ -30,8 +30,7 @@ import Face3 = THREE.Face3;
 import Point = objects.Point;
 import CScreen = config.Screen;
 import Clock = THREE.Clock;
-//haha
-//nono
+
 //Custom Game Objects
 import gameObject = objects.gameObject;
 
@@ -73,7 +72,9 @@ var game = (() => {
     var directionLineMaterial: LineBasicMaterial;
     var directionLineGeometry: Geometry;
     var directionLine: Line;
-    
+    var dead: boolean = false;
+
+
     //level objects
     //big island
     var bigIsland: Physijs.Mesh;
@@ -135,9 +136,10 @@ var game = (() => {
         clock = new Clock();
 
         setupRenderer(); // setup the default renderer
-        
+
         setupLevel(); //setup level
-        
+      
+
         // Spot Light
         spotLight = new SpotLight(0xffffff);
         spotLight.position.set(20, 40, -15);
@@ -169,15 +171,15 @@ var game = (() => {
         player.name = "Player";
         scene.add(player);
         console.log("Added Player to Scene");
-        
+
         // setup the camera
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 100);
         camera.position.set(0, 5, 15);
         camera.lookAt(new Vector3(0, 0, 0));
         player.add(camera);
         console.log("Finished setting up Camera...");
-        
-        
+
+
         // Collision Check
         player.addEventListener('collision', (event) => {
             if (event.name === "BigIsland") {
@@ -278,7 +280,15 @@ var game = (() => {
     // Setup main game loop
     function gameLoop(): void {
         stats.update();
-
+        
+        // if (player.position.y < -5) {
+        //     dead = true;
+        // }
+        // if(dead){
+        //     player.position.set(0,3,0);
+        //     dead = false;
+        // }
+        
         if (keyboardControls.enabled) {
             velocity = new Vector3();
 
@@ -324,11 +334,11 @@ var game = (() => {
 
         } // Controls Enabled ends
         else {
-            player.setAngularVelocity(new Vector3(0, 0 , 0));   
+            player.setAngularVelocity(new Vector3(0, 0, 0));
         }
 
 
-            prevTime = time;
+        prevTime = time;
 
         // render using requestAnimationFrame
         requestAnimationFrame(gameLoop);
@@ -353,17 +363,17 @@ var game = (() => {
         bigIslandGeometry = new BoxGeometry(32, 1, 20);
         bigIslandMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
         bigIsland = new Physijs.ConvexMesh(bigIslandGeometry, bigIslandMaterial, 0);
-        bigIsland.position.set(0,0,5);
+        bigIsland.position.set(0, 0, 5);
         bigIsland.receiveShadow = true;
         bigIsland.name = "BigIsland";
         scene.add(bigIsland);
         console.log("Added BigIsland to scene");
-        
+
         // Board
         boardGeometry = new BoxGeometry(32, 1, 5);
         boardMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
         board = new Physijs.ConvexMesh(boardGeometry, boardMaterial, 0);
-        board.position.set(0,0,-15);
+        board.position.set(0, 0, -15);
         board.receiveShadow = true;
         board.name = "Board";
         scene.add(board);
@@ -372,12 +382,12 @@ var game = (() => {
         boardGeometry = new BoxGeometry(32, 1, 5);
         boardMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xeffffff }), 0, 0);
         board = new Physijs.ConvexMesh(boardGeometry, boardMaterial, 0);
-        board.position.set(0,0,-30);
+        board.position.set(0, 0, -30);
         board.receiveShadow = true;
         board.name = "Board";
         scene.add(board);
         console.log("Added Board to scene");
-        
+
         console.log("Finished setting up Level...");
     }
 
